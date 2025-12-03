@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Family Members - {{ family.name }}</h2>
+<a href="{% url 'families:family_member_create' family.id %}">Add Member</a>
+<ul>
+  {% for m in members %}
+    <li>
+      {{ m.name }} ({{ m.relationship }})
+      <a href="{% url 'families:family_member_edit' family.id m.id %}">Edit</a>
+    </li>
+  {% empty %}
+    <li>No members yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
