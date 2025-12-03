@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Refill Reminders</h2>
+<ul>
+  {% for r in reminders %}
+    <li>
+      {{ r.medication.family_member.name }} - {{ r.medication.name }}<br>
+      Run out approx: {{ r.estimated_run_out_date }} | Reminder date: {{ r.reminder_date }}
+    </li>
+  {% empty %}
+    <li>No refill reminders.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
