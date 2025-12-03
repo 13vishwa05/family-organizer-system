@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Daily Checklist</h2>
+<form method="get">
+  Date: <input type="date" name="date" value="{{ target_date|date:'Y-m-d' }}">
+  Member:
+  <select name="member">
+    <option value="">All</option>
+    {% for m in members %}
+      <option value="{{ m.id }}" {% if selected_member and selected_member.id == m.id %}selected{% endif %}>{{ m.name }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Filter</button>
+</form>
+
+<table border="1" cellpadding="4">
+  <tr>
+    <th>Time</th>
+    <th>Member</th>
+    <th>Medication</th>
+    <th>Dosage</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  {% for d in doses %}
+  <tr>
+    <td>{{ d.time_of_day }}</td>
+    <td>{{ d.family_member.name }}</td>
+    <td>{{ d.medication.name }}</td>
+    <td>{{ d.medication.dosage }}</td>
+    <td>{{ d.status|default:"Not marked" }}</td>
+    <td>
+      <form method="post" style="display:inline;">
+        {% csrf_token %}
+        <input type="hidden" name="schedule_id" value="{{ d.schedule.id }}">
+        <button type="submit" name="action" value="TAKEN">Taken</button>
+        <button type="submit" name="action" value="MISSED">Missed</button>
+      </form>
+    </td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="6">No medications scheduled.</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
