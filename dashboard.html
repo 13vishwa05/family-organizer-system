@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard - {{ today }}</h2>
+
+<h3>Today's Medications</h3>
+<table border="1" cellpadding="4">
+  <tr>
+    <th>Time</th><th>Member</th><th>Medication</th><th>Dosage</th><th>Status</th>
+  </tr>
+  {% for d in today_doses %}
+  <tr>
+    <td>{{ d.time_of_day }}</td>
+    <td>{{ d.family_member.name }}</td>
+    <td>{{ d.medication.name }}</td>
+    <td>{{ d.medication.dosage }}</td>
+    <td>{{ d.status|default:"Not marked" }}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="5">No meds today.</td></tr>
+  {% endfor %}
+</table>
+
+<h3>Today's Appointments</h3>
+<ul>
+  {% for a in appointments_today %}
+    <li>{{ a.family_member.name }} with {{ a.doctor_name }} at {{ a.date_time }}</li>
+  {% empty %}
+    <li>No appointments today.</li>
+  {% endfor %}
+</ul>
+
+<h3>Refill Alerts</h3>
+<ul>
+  {% for r in refill_alerts %}
+    <li>{{ r.medication.family_member.name }} - {{ r.medication.name }} (Refill by {{ r.reminder_date }})</li>
+  {% empty %}
+    <li>No refill alerts.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

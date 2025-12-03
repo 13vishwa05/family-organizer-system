@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <title>Family Medication Organizer</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Family Medication & Appointment Organizer</h1>
+    {% if user.is_authenticated %}
+      <nav>
+        <a href="{% url 'dashboard' %}">Dashboard</a> |
+        <a href="{% url 'families:family_members_list' user.family_groups.first.id %}">Family Members</a> |
+        <a href="{% url 'medications:medications_list' %}">Medications</a> |
+        <a href="{% url 'medications:daily_checklist' %}">Daily Checklist</a> |
+        <a href="{% url 'appointments:appointments_list' %}">Appointments</a> |
+        <a href="{% url 'notifications:refill_reminders' %}">Refill Reminders</a> |
+        <a href="{% url 'medications:stats' %}">Stats</a> |
+        <a href="{% url 'accounts:logout' %}">Logout</a>
+      </nav>
+    {% endif %}
+    <hr>
+  </header>
+  <main>
+    {% if messages %}
+      <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
